@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrustLabel | AI Greenwashing Screening</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="background-glow glow-one"></div>
+    <div class="background-glow glow-two"></div>
+
+    <nav class="navbar">
+        <div class="brand-logo">
+            <span class="logo-cube">✦</span>
+            <span>Trust<span>Label</span></span>
+        </div>
+        <div class="nav-pill">Gemini LLM • Demo</div>
+    </nav>
+
+    <main class="container">
+        <section class="hero">
+            <div class="hero-copy">
+                <p class="eyebrow">AI-POWERED SUSTAINABILITY CHECK</p>
+                <h1>See beyond the <span>green words.</span></h1>
+                <p class="hero-text">
+                    Check brand claims, product labels, photos, and short videos
+                    for possible greenwashing warning signs.
+                </p>
+                <div class="hero-tags">
+                    <span>Brand analysis</span>
+                    <span>Photo input</span>
+                    <span>Video input</span>
+                </div>
+            </div>
+
+            <div class="scene" aria-label="Decorative 3D sustainability illustration">
+                <div class="orbit orbit-one"></div>
+                <div class="orbit orbit-two"></div>
+                <div class="planet">
+                    <div class="planet-shine"></div>
+                    <div class="leaf leaf-one"></div>
+                    <div class="leaf leaf-two"></div>
+                </div>
+                <div class="floating-card card-front">AI<br><b>SCAN</b></div>
+                <div class="floating-card card-back">ECO<br><b>CHECK</b></div>
+            </div>
+        </section>
+
+        <section class="workspace">
+            <div class="panel input-panel">
+                <div class="panel-heading">
+                    <div>
+                        <p class="section-label">01 / INPUT</p>
+                        <h2>Tell us about the claim</h2>
+                    </div>
+                    <span class="status-dot">● Ready</span>
+                </div>
+
+                <form id="analysisForm">
+                    <label for="brand">Brand name <small>(optional)</small></label>
+                    <input id="brand" name="brand" type="text"
+                           placeholder="Example: GreenWave">
+
+                    <label for="claim">Sustainability claim or product label</label>
+                    <textarea id="claim" name="claim" rows="5" maxlength="5000"
+                              placeholder="Example: Our bottle is 100% eco-friendly and causes zero impact on the planet."></textarea>
+                    <div class="counter"><span id="counter">0</span> / 5000</div>
+
+                    <div class="upload-grid">
+                        <div class="upload-box">
+                            <label for="photo" class="upload-label">
+                                <span class="upload-icon">▧</span>
+                                <b>Upload photo</b>
+                                <small>JPG, PNG, WEBP</small>
+                            </label>
+                            <input id="photo" name="photo" type="file" accept="image/*">
+                            <p id="photoName" class="file-name">No photo selected</p>
+                        </div>
+
+                        <div class="upload-box">
+                            <label for="video" class="upload-label">
+                                <span class="upload-icon">▶</span>
+                                <b>Upload video</b>
+                                <small>Short MP4, MOV, WEBM</small>
+                            </label>
+                            <input id="video" name="video" type="file" accept="video/*">
+                            <p id="videoName" class="file-name">No video selected</p>
+                        </div>
+                    </div>
+
+                    <div class="preview-area hidden" id="previewArea">
+                        <img id="photoPreview" alt="Selected photo preview">
+                        <video id="videoPreview" controls></video>
+                    </div>
+
+                    <div class="example-row">
+                        <button type="button" class="example-btn" data-example="Our packaging is 100% eco-friendly and completely harmless to nature.">Example 1</button>
+                        <button type="button" class="example-btn" data-example="Made with 50% recycled material, verified by an independent laboratory.">Example 2</button>
+                    </div>
+
+                    <button class="primary-btn" type="submit">
+                        Analyze with Gemini <span>↗</span>
+                    </button>
+                    <p class="privacy-note">Do not upload confidential documents or private personal information.</p>
+                </form>
+            </div>
+
+            <div class="panel info-panel">
+                <p class="section-label">HOW IT WORKS</p>
+                <h2>One scan. Clearer questions.</h2>
+
+                <div class="step">
+                    <span>01</span>
+                    <div><b>Read the claim</b><p>Gemini reviews the words and context.</p></div>
+                </div>
+                <div class="step">
+                    <span>02</span>
+                    <div><b>Inspect media</b><p>Photos and videos provide additional context.</p></div>
+                </div>
+                <div class="step">
+                    <span>03</span>
+                    <div><b>Show the highlights</b><p>Get warning phrases, evidence needs, and a clearer rewrite.</p></div>
+                </div>
+
+                <div class="notice">
+                    <b>Important</b>
+                    <p>The score is an AI-based preliminary indicator. It is not proof of wrongdoing or certification.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="loading" class="loading hidden">
+            <div class="loader"></div>
+            <h3>Gemini is reviewing your input...</h3>
+            <p>This may take a few seconds.</p>
+        </section>
+
+        <section id="results" class="results hidden">
+            <div class="results-header">
+                <div>
+                    <p class="section-label">02 / RESULTS</p>
+                    <h2>TrustLabel report</h2>
+                </div>
+                <button id="newBtn" class="secondary-btn">New analysis ↗</button>
+            </div>
+
+            <div class="report-grid">
+                <div class="score-card">
+                    <p class="section-label">RISK INDICATOR</p>
+                    <div class="score-number"><span id="score">0</span><small>/100</small></div>
+                    <div class="score-track"><div id="scoreFill"></div></div>
+                    <span id="riskText" class="risk-badge">Uncertain</span>
+                    <p id="summary" class="summary"></p>
+                </div>
+
+                <div class="report-card">
+                    <p class="section-label">USER HIGHLIGHTS</p>
+                    <ul id="highlights"></ul>
+                </div>
+
+                <div class="report-card wide">
+                    <p class="section-label">POTENTIAL RED FLAGS</p>
+                    <div id="redFlags"></div>
+                </div>
+
+                <div class="report-card">
+                    <p class="section-label">EVIDENCE TO CHECK</p>
+                    <ul id="evidence"></ul>
+                </div>
+
+                <div class="report-card">
+                    <p class="section-label">TRANSPARENT REWRITE</p>
+                    <p id="rewrite" class="rewrite"></p>
+                </div>
+
+                <div class="report-card wide">
+                    <p class="section-label">LIMITATIONS</p>
+                    <ul id="limitations"></ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        TrustLabel © 2026 • Built for a better tomorrow
+    </footer>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
